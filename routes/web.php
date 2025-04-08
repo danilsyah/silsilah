@@ -24,8 +24,11 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::middleware('auth')->group(function () {
-    Route::get('/', [UsersController::class, 'search']);
+Route::get('/', [UsersController::class, 'search']);
+Route::get('profile-search', [UsersController::class, 'search'])->name('users.search');
+Route::get('users/{user}',[UsersController::class,'show'])->name('users.show');
+Route::middleware('auth','optimizeImages')->group(function () {
+    
 
     Route::controller(HomeController::class)->group(function () {
         Route::get('home', 'index')->name('home');
@@ -42,8 +45,8 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::controller(UsersController::class)->group(function () {
-        Route::get('profile-search', 'search')->name('users.search');
-        Route::get('users/{user}', 'show')->name('users.show');
+        
+        // Route::get('users/{user}', 'show')->name('users.show');
         Route::get('users/{user}/edit', 'edit')->name('users.edit');
         Route::patch('users/{user}', 'update')->name('users.update');
         Route::get('users/{user}/chart', 'chart')->name('users.chart');

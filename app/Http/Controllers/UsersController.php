@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Couple;
 use App\Http\Requests\Users\UpdateRequest;
-use App\Jobs\Images\OptimizeImages;
 use App\Jobs\Users\DeleteAndReplaceUser;
+use Spatie\ImageOptimizer\OptimizerChainFactory;
 use App\User;
 use App\UserMetadata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Ramsey\Uuid\Uuid;
 use Storage;
+use ImageOptimizer;
+
 
 class UsersController extends Controller
 {
@@ -208,7 +210,7 @@ class UsersController extends Controller
     public function photoUpload(Request $request, User $user)
     {
         $request->validate([
-            'photo' => 'required|image|max:10000',
+            'photo' => 'required|image|max:10240',
         ]);
 
         if (Storage::exists($user->photo_path)) {
@@ -216,10 +218,13 @@ class UsersController extends Controller
         }
 
         $user->photo_path = $request->photo->store('images');
+        $pathToImage = public_path('storage/'.$user->photo_path);
+
+        // the image will be replaced with an optimized version which should be smaller
+        ImageOptimizer::optimize($pathToImage);
+
         $user->save();
-
-        OptimizeImages::dispatch([$user->photo_path]);
-
+        
         return back();
     }
 
