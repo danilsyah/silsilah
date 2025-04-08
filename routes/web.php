@@ -24,9 +24,17 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
+// guest
 Route::get('/', [UsersController::class, 'search']);
 Route::get('profile-search', [UsersController::class, 'search'])->name('users.search');
 Route::get('users/{user}',[UsersController::class,'show'])->name('users.show');
+Route::get('users/{user}/chart', [UsersController::class,'chart'])->name('users.chart');
+Route::get('users/{user}/tree', [UsersController::class,'tree'])->name('users.tree');
+Route::get('users/{user}/death', [UsersController::class,'death'])->name('users.death');
+Route::get('users/{user}/marriages', [UserMarriagesController::class, 'index'])->name('users.marriages');
+Route::get('birthdays', [BirthdayController::class, 'index'])->name('birthdays.index');
+
+
 Route::middleware('auth','optimizeImages')->group(function () {
     
 
@@ -49,16 +57,14 @@ Route::middleware('auth','optimizeImages')->group(function () {
         // Route::get('users/{user}', 'show')->name('users.show');
         Route::get('users/{user}/edit', 'edit')->name('users.edit');
         Route::patch('users/{user}', 'update')->name('users.update');
-        Route::get('users/{user}/chart', 'chart')->name('users.chart');
-        Route::get('users/{user}/tree', 'tree')->name('users.tree');
-        Route::get('users/{user}/death', 'death')->name('users.death');
+        // Route::get('users/{user}/chart', 'chart')->name('users.chart');
+        // Route::get('users/{user}/tree', 'tree')->name('users.tree');
+        // Route::get('users/{user}/death', 'death')->name('users.death');
         Route::patch('users/{user}/photo-upload', 'photoUpload')->name('users.photo-upload');
         Route::delete('users/{user}', 'destroy')->name('users.destroy');
     });
 
-    Route::get('users/{user}/marriages', [UserMarriagesController::class, 'index'])->name('users.marriages');
 
-    Route::get('birthdays', [BirthdayController::class, 'index'])->name('birthdays.index');
     /**
      * Couple/Marriages Routes
      */

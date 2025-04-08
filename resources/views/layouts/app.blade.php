@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
+
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,17 +15,38 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('ext_css')
     <style>
-    .page-header {
-        margin-top: 0px;
-    }
+        .page-header {
+            margin-top: 0px;
+        }
+    </style>
+
+    <style>
+        .navbar-default {
+            background-color: #2c3e50;
+            /* ganti dengan warna sesuai keinginan */
+            border-color: #2c3e50;
+        }
+
+        .navbar-default .navbar-nav>li>a,
+        .navbar-default .navbar-brand {
+            color: #ffffff;
+            /* warna teks */
+        }
+
+        .navbar-default .navbar-nav>li>a:hover,
+        .navbar-default .navbar-brand:hover {
+            color: #dddddd;
+            /* warna saat hover */
+        }
     </style>
 </head>
+
 <body>
     <div id="app">
         @include('layouts.partials.nav')
 
         <div class="container">
-        @yield('content')
+            @yield('content')
         </div>
     </div>
 
@@ -35,17 +57,18 @@
     <script>
         var header = $('h2.page-header').contents();
         str = '';
-        mainText = header.filter(function () {
-                // return type of text
-                return this.nodeType === 3;
-            })[0];
+        mainText = header.filter(function() {
+            // return type of text
+            return this.nodeType === 3;
+        })[0];
         str += mainText.data.trim();
 
         if (mainText.nextSibling) {
             // next siblings should be a small tag text
-            str += " - "+mainText.nextSibling.innerText;
+            str += " - " + mainText.nextSibling.innerText;
         }
-        $('title').prepend(str+" - ");
+        $('title').prepend(str + " - ");
     </script>
 </body>
+
 </html>
