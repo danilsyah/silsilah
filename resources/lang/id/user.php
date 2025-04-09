@@ -56,7 +56,7 @@ return [
     // Photo
     'reupload_photo' => 'Upload ulang Foto',
     'update_photo'   => 'Update Foto',
-    'upload_photo_notes' => 'Format jpg, maks: 10MB.',
+    'upload_photo_notes' => 'Format jpg, maks: 1MB.',
 
     // Deletion confirm attributes
     'delete'                => 'Hapus User',

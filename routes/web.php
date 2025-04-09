@@ -24,7 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-// guest
+// guest access
 Route::get('/', [UsersController::class, 'search']);
 Route::get('profile-search', [UsersController::class, 'search'])->name('users.search');
 Route::get('users/{user}',[UsersController::class,'show'])->name('users.show');
@@ -37,7 +37,6 @@ Route::get('birthdays', [BirthdayController::class, 'index'])->name('birthdays.i
 
 Route::middleware('auth','optimizeImages')->group(function () {
     
-
     Route::controller(HomeController::class)->group(function () {
         Route::get('home', 'index')->name('home');
         Route::get('profile', 'index')->name('profile');

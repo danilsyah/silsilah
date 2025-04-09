@@ -6,13 +6,15 @@ use App\Couple;
 use App\Http\Requests\Users\UpdateRequest;
 use App\Jobs\Users\DeleteAndReplaceUser;
 use Spatie\ImageOptimizer\OptimizerChainFactory;
-use App\User;
-use App\UserMetadata;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Ramsey\Uuid\Uuid;
-use Storage;
-use ImageOptimizer;
+use Illuminate\Support\Facades\Storage;
+
+use App\User;
+use App\UserMetadata;
+
+
 
 
 class UsersController extends Controller
@@ -184,7 +186,7 @@ class UsersController extends Controller
                 'replacement_user_id.required' => __('validation.user.replacement_user_id.required'),
             ]);
 
-            $this->dispatchNow(new DeleteAndReplaceUser($user, $attributes['replacement_user_id']));
+            $this->dispatch(new DeleteAndReplaceUser($user, $attributes['replacement_user_id']));
 
             return redirect()->route('users.show', $attributes['replacement_user_id']);
         }
@@ -210,7 +212,7 @@ class UsersController extends Controller
     public function photoUpload(Request $request, User $user)
     {
         $request->validate([
-            'photo' => 'required|image|max:10240',
+            'photo' => 'required|image|max:1024',
         ]);
 
         if (Storage::exists($user->photo_path)) {
@@ -221,7 +223,8 @@ class UsersController extends Controller
         $pathToImage = public_path('storage/'.$user->photo_path);
 
         // the image will be replaced with an optimized version which should be smaller
-        ImageOptimizer::optimize($pathToImage);
+        $optimizerChain = OptimizerChainFactory::create();
+        $optimizerChain->optimize($pathToImage);
 
         $user->save();
         

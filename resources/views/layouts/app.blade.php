@@ -39,6 +39,11 @@
             /* warna saat hover */
         }
     </style>
+    <style>
+        body {
+            padding-top: 70px; /* atur sesuai tinggi navbar kamu */
+        }
+    </style>
 </head>
 
 <body>
